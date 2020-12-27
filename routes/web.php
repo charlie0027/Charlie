@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\HomeController;
+
+use App\Http\Controllers\HobbyController;
+
+use App\Http\Controllers\TagController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,9 +20,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('starting_page');
 });
+
+Route::get('/info', function () {
+    return view('info');
+});
+
+// Route::get('/test/{name}/{age}', [HobbyController::class, 'index']);
+
+Route::resource('hobby', HobbyController::class);
+
+Route::resource('tag', TagController::class);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
