@@ -63,7 +63,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //to follow
+        
     }
 
     /**

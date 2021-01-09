@@ -12,12 +12,17 @@
                         @foreach($tags as $tag)
                             <li class="list-group-item">
                                 <a href="/tag/{{ $tag->id }}" title="Show details here" class="btn btn-{!!lcfirst($tag->style)!!}">{{ $tag->name }}</a> 
+                                @auth
                                 <a href="/tag/{{ $tag->id}}/edit" class="btn btn-sm btn-priimary ml-2 btn-outline-primary"><i class="fas fa-edit"></i> Edit Tag</a>
-                                <form style="display: inline" class="float-right" action="/tag/{{$tag->id}}" method="POST">
+                                <form style="display: inline" action="/tag/{{$tag->id}}" method="POST">
                                     @csrf
                                     @method("DELETE")
                                     <input type="submit" value="Delete" class="btn btn-small btn-outline-danger">
                                 </form>
+                                @endauth
+                                
+                                <a href="/hobby_tag/tag/{{$tag->id}}" class="float-right">Used {{ $tag->hobbies()->count() }} Times</a>
+                                
                             </li>
 
                             <!-- <li class="list-group-item">

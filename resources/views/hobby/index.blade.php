@@ -5,8 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-11">
             <div class="card">
-                <div class="card-header">All the Hobbies
-
+                @isset($filter)
+                    <div class="card-header">Filtered hobbies by <span style="font-size:120%;" class="badge badge-{{ $filter->style }}">{{ $filter->name }}</span>
+                    <a href="/hobby" class="float-right"> <span> Show all Hobbies</span></a>
+                @else
+                    <div class="card-header">All the Hobbies
+                @endisset
                 <div class="card-body">
                     <ul class="list-group">
                         @foreach($hobbies as $hobby)
@@ -15,7 +19,7 @@
                                 @auth()
                                 <a href="/hobby/{{ $hobby->id}}/edit" class="btn btn-sm btn-light ml-2"><i class="fas fa-edit"></i> Edit hobby</a>
                                 @endauth()
-                                <span class="mx-2">Posted by: {{ $hobby->user->name }} ( {{ $hobby->user->hobbies->count() }} Hobbies)</span>
+                                <span class="mx-2">Posted by: <a href="/user/{{ $hobby->user_id }}">{{ $hobby->user->name }} </a>( {{ $hobby->user->hobbies->count() }} Hobbies)</span>
                                 @auth()
                                 <form style="display: inline" class="float-right" action="/hobby/{{$hobby->id}}" method="POST">
                                     @csrf
@@ -24,6 +28,10 @@
                                 </form>
                                 @endauth()
                                 <span class="float-right mx-2">{{ $hobby->created_at->diffForHumans() }}</span>
+                                <br>
+                                @foreach($hobby->tags as $tag)
+                                    <a href="/hobby_tag/tag/{{ $tag->id }}"><span class="badge badge-{{ $tag->style }}"> {{ $tag->name }}</span></a>
+                                @endforeach
                             </li>
 
                             <!-- <li class="list-group-item">
