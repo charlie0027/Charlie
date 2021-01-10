@@ -5,51 +5,57 @@
     <div class="row justify-content-center">
         <div class="col-md-11">
             <div class="card">
-                <div class="card-header">Hello {{ auth()->user()->name }}</div>
+                <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h2>Hello {{ auth()->user()->name }}</h2>
+                            <h5>Your Motto</h5>
+                            <p><p>{{ auth()->user()->motto ?? '' }}</p></p>
+                            <h5>Your "About Me" -Text</h5>
+                            <p><p>{{ auth()->user()->about_me ?? '' }}</p></p>
                         </div>
-                    @endif
-                    
+                        <div class="col-md-3">
+                            <img class="img-thumbnail" src="/img/300x400.jpg" alt="{{ auth()->user()->name }}">
+                        </div>
+                    </div>
+
+
+
                     @isset($hobbies)
-                    @if($hobbies->count() > 0)
-                    <h4>My Hobbies:</h4>
-                    @endif
+                        @if($hobbies->count() > 0)
+                        <h3>Your Hobbies:</h3>
+                        @endif
                     <ul class="list-group">
                         @foreach($hobbies as $hobby)
                             <li class="list-group-item">
-                                <a href="/hobby/{{ $hobby->id }}" title="Show details here">{{ $hobby->name }}</a> 
-                                @auth()
-                                <a href="/hobby/{{ $hobby->id}}/edit" class="btn btn-sm btn-light ml-2"><i class="fas fa-edit"></i> Edit hobby</a>
-                                @endauth()
-                                
-                                @auth()
-                                <form style="display: inline" class="float-right" action="/hobby/{{$hobby->id}}" method="POST">
-                                    @csrf
-                                    @method("DELETE")
-                                    <input type="submit" value="Delete" class="btn btn-small btn-outline-danger">
-                                </form>
-                                @endauth()
+                                <a title="Show Details" href="/hobby/{{ $hobby->id }}">
+                                    <img src="/img/thumb_landscape.jpg" alt="thumb"></a>
+                                    {{ $hobby->name }}
+                                </a>
+                                @auth
+                                    <a class="btn btn-sm btn-light ml-2" href="/hobby/{{ $hobby->id }}/edit"><i class="fas fa-edit"></i> Edit Hobby</a>
+                                @endauth
+
+                                @auth
+                                    <form class="float-right" style="display: inline" action="/hobby/{{ $hobby->id }}" method="post">
+                                        @csrf
+                                        @method("DELETE")
+                                        <input class="btn btn-sm btn-outline-danger" type="submit" value="Delete">
+                                    </form>
+                                @endauth
                                 <span class="float-right mx-2">{{ $hobby->created_at->diffForHumans() }}</span>
                                 <br>
                                 @foreach($hobby->tags as $tag)
-                                    <a href="/hobby_tag/tag/{{ $tag->id }}"><span class="badge badge-{{ $tag->style }}"> {{ $tag->name }}</span></a>
+                                    <a href="/hobby/tag/{{ $tag->id }}"><span class="badge badge-{{ $tag->style }}">{{ $tag->name }}</span></a>
                                 @endforeach
                             </li>
-
-                            <!-- <li class="list-group-item">
-                                {{ $hobby->description }}
-                            </li> -->
-                            
                         @endforeach
                     </ul>
                     @endisset
 
-                    <a href="/hobby/create" class="btn btn-success btn-sm"> <i class="fas fa-plus-circle"></i> Create a Hobby</a>
-                    
+                    <a class="btn btn-success btn-sm" href="/hobby/create"><i class="fas fa-plus-circle"></i> Create new Hobby</a>
                 </div>
             </div>
         </div>

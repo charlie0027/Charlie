@@ -87,7 +87,7 @@ class HobbyController extends Controller
 
         return view('hobby.show')->with([
             'hobby' => $hobby,
-            'availTags' => $availTags,
+            'availableTags' => $availTags,
             'usedTags' => $usedTags,   
             'message_success' => Session::get('message_success'),
             'message_warning' => Session::get('message_warning')
